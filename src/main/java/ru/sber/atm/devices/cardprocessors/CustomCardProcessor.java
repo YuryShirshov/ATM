@@ -24,7 +24,7 @@ public class CustomCardProcessor implements CardProcessor {
     @Override
     public CardData getCardData(String cardNum) {
         CardData cardData = new CardData();
-        cardData.setNum("1111 1111 1111 1111");
+        cardData.setNumber("1111 1111 1111 1111");
         cardData.setHolder("Holder Name");
         cardData.setCvc2(111);
         cardData.setExpiryDate(LocalDate.of(2023, 1, 1));

@@ -2,12 +2,16 @@ package ru.sber.atm;
 
 public enum Command {
     UNKNOWN("Неизвестная команда"),
-    GET_CASH("Снять наличные"),
-    DEPOSIT_CASH("Внести наличные"),
-    PAY_FOR_SERVICES("Оплатить услуги"),
-    GET_BALANCE("Узнать баланс");
+    GET_CASH("1 - Снять наличные"),
+    DEPOSIT_CASH("2 - Внести наличные"),
+    PAY_FOR_SERVICES("3 - Оплатить услуги"),
+    GET_BALANCE("4 - Узнать баланс");
 
-    private String description;
+    public String getDescription() {
+        return description;
+    }
+
+    private final String description;
 
     Command(String description) {
         this.description = description;

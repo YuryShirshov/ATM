@@ -23,12 +23,21 @@ public class CustomUI implements UI {
     @Override
     public Command getCommand() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите номер команды (1 - Снять наличные, 2 - Внести наличные, 3 - Оплатить услуги, 4 - Узнать баланс): ");
+        System.out.println("Введите номер команды: "
+                + System.lineSeparator()
+                + Command.GET_CASH.getDescription()
+                + System.lineSeparator()
+                + Command.DEPOSIT_CASH.getDescription()
+                + System.lineSeparator()
+                + Command.PAY_FOR_SERVICES.getDescription()
+                + System.lineSeparator()
+                + Command.GET_BALANCE.getDescription()
+        );
         int number = scanner.nextInt();
-        try {
-            return Command.values()[number];
-        } catch (ArrayIndexOutOfBoundsException e) {
+        if (number < 1 || number > Command.values().length) {
             return Command.UNKNOWN;
+        } else {
+            return Command.values()[number];
         }
     }
 

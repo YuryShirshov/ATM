@@ -10,7 +10,7 @@ import java.time.LocalDate;
  */
 @Data
 public class CardData {
-    private String num;
+    private String number;
     private String holder;
     private int cvc2;
     private LocalDate expiryDate;
