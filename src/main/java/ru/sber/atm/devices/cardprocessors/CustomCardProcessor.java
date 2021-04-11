@@ -2,6 +2,7 @@ package ru.sber.atm.devices.cardprocessors;
 
 import ru.sber.atm.data.*;
 import ru.sber.atm.data.balance.*;
+import ru.sber.atm.enums.Error;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,23 +30,31 @@ public class CustomCardProcessor implements CardProcessor {
      */
     @Override
     public Account<Balance> getAccountData(String cardNum) {
-        Client<Balance> client = clients.stream().filter(x -> x.getAccountByNumber(cardNum) != null).findAny().orElse(null);
+        Client<Balance> client = getClientData(cardNum);
         if (client != null) return client.getAccountByNumber(cardNum);
         return null;
     }
 
     /**
-     * Метод проверки ПИН-кода
+     * Метод валидации полученной информации по карте
      */
     @Override
-    public Boolean checkPin(String rawData, int pin) {
-        Account<Balance> account = getAccountData(rawData);
-        if (account != null) {
-            CardData cardData = account.getCardDataByNumber(rawData);
-            if (cardData != null) {
-                return cardData.getPin() == pin;
-            }
+    public Error validateCardData(String cardNum, int pin) {
+        Client<Balance> client = getClientData(cardNum);
+        if (client == null) {
+            return Error.HOLDER_NOT_FOUND;
         }
-        return false;
+        CardData cardData = client.getAccountByNumber(cardNum).getCardDataByNumber(cardNum);
+        if (cardData.getPin() != pin) {
+            return Error.INCORRECT_PIN;
+        }
+        if (cardData.getExpiryDate().compareTo(LocalDate.now()) < 0) {
+            return Error.DATE_EXPIRED;
+        }
+        return Error.NO_ERROR;
+    }
+
+    private Client<Balance> getClientData(String cardNum) {
+        return clients.stream().filter(x -> x.getAccountByNumber(cardNum) != null).findAny().orElse(null);
     }
 }

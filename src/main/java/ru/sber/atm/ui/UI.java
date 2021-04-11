@@ -12,13 +12,11 @@ public interface UI {
 
     void showBalancePage(String accountNumber, BigDecimal balance, String currency);
 
-    void showWrongPinPage();
-
     void showUnsupportedCommandPage();
 
     void showRemoveCardPage();
 
-    void showCardNotFoundPage();
+    void showErrorPage(String errorMessage);
 
     Command getCommand();
 }

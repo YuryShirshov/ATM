@@ -10,6 +10,7 @@ import ru.sber.atm.devices.cardprocessors.CardProcessor;
 import ru.sber.atm.devices.cardreaders.CardReader;
 import ru.sber.atm.devices.pinpads.PinPad;
 import ru.sber.atm.enums.Command;
+import ru.sber.atm.enums.Error;
 import ru.sber.atm.ui.UI;
 
 @RequiredArgsConstructor
@@ -31,20 +32,13 @@ public class ATM {
         cardReader.isCardInsert();
         // Считываем информацию с карты
         String rawData = cardReader.getRawData();
-        // Получим информацию по номеру карты
-        Account<Balance> account = cardProcessor.getAccountData(rawData);
-        if (account == null) {
-            ui.showCardNotFoundPage();
-            ui.showRemoveCardPage();
-            cardReader.removeCard();
-            return;
-        }
         // Запрашиваем ПИН-код
         ui.showPinPage();
         int pin = pinPad.getPinCode();
-        if (!cardProcessor.checkPin(rawData, pin)) {
-            // ПИН-код не прошел проверку, показываем ошибку и выходим
-            ui.showWrongPinPage();
+        // Валидируем полученную информацию
+        Error error = cardProcessor.validateCardData(rawData, pin);
+        if (error != Error.NO_ERROR) {
+            ui.showErrorPage(error.getDescription());
             ui.showRemoveCardPage();
             cardReader.removeCard();
             return;
@@ -52,6 +46,7 @@ public class ATM {
         // Получаем команду, которую ввёл пользователь
         Command command = ui.getCommand();
         if (command == Command.GET_BALANCE) {// Запрос баланса
+            Account<Balance> account = cardProcessor.getAccountData(rawData);
             ui.showBalancePage(account.getNumber(), account.getBalance().getSum(), account.getBalance().getCurrency().getName());
         } else {// Остальные команды не реализованы
             ui.showUnsupportedCommandPage();

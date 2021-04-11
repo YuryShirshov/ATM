@@ -52,11 +52,6 @@ public class CustomUI implements UI {
     }
 
     @Override
-    public void showWrongPinPage() {
-        System.out.println("Введен неверный ПИН-код");
-    }
-
-    @Override
     public void showUnsupportedCommandPage() {
         System.out.println("Выбранная команда не поддерживается");
     }
@@ -67,7 +62,7 @@ public class CustomUI implements UI {
     }
 
     @Override
-    public void showCardNotFoundPage() {
-        System.out.println("Информация о карте не найдена");
+    public void showErrorPage(String errorMessage) {
+        System.out.println(errorMessage);
     }
 }
