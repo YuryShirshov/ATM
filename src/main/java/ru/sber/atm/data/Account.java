@@ -1,7 +1,9 @@
 package ru.sber.atm.data;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
 import ru.sber.atm.data.balance.Balance;
 
 import java.util.List;
@@ -10,10 +12,11 @@ import java.util.List;
  * Класс представления информации о счёте
  */
 @Data
+@FieldDefaults(makeFinal=true, level= AccessLevel.PRIVATE)
 public class Account<T extends Balance> {
-    @NonNull private String number;
-    @NonNull private T balance;
-    @NonNull private List<CardData> cardData;
+    @NonNull String number;
+    @NonNull T balance;
+    @NonNull List<CardData> cardData;
 
     /**
      * Метод получения информации о карте по номеру

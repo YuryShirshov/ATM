@@ -14,16 +14,12 @@ import ru.sber.atm.enums.Error;
 import ru.sber.atm.ui.UI;
 
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal=true, level=AccessLevel.PRIVATE)
 public class ATM {
-    @NonNull
-    private final UI ui;
-    @NonNull
-    private final CardReader cardReader;
-    @NonNull
-    private final CardProcessor cardProcessor;
-    @NonNull
-    private final PinPad pinPad;
+    @NonNull UI ui;
+    @NonNull CardReader cardReader;
+    @NonNull CardProcessor cardProcessor;
+    @NonNull PinPad pinPad;
 
     public void Run() {
         // Показываем стартовую страницу
