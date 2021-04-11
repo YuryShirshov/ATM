@@ -22,6 +22,7 @@ public class CustomCardProcessor implements CardProcessor {
         cardData.add(new CardData(4321, "1111 1111 1111 1112", 222, LocalDate.of(2020, 1, 1)));
         List<Account<Balance>> accounts = new ArrayList<>();
         accounts.add(new Account<>("9999 9999 9999 9999", new BalanceWithNegativeValue(BigDecimal.valueOf(1000), new Currency(810, "RUB")), cardData));
+        accounts.add(new Account<>("8888 8888 8888 8888", new BalanceWithoutNegativeValue(BigDecimal.valueOf(2000), new Currency(810, "RUB")), new ArrayList<>()));
         clients.add(new Client<>(1, "Client #1", 25, accounts));
     }
 
