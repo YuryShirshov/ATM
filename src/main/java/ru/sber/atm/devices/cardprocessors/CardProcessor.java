@@ -1,10 +1,11 @@
 package ru.sber.atm.devices.cardprocessors;
 
-import ru.sber.atm.data.CardData;
+import ru.sber.atm.data.Account;
+import ru.sber.atm.data.balance.Balance;
 
 public interface CardProcessor {
 
-    Boolean checkPin(String rawData, String pin);
+    Account<Balance> getAccountData(String cardNum);
 
-    CardData getCardData(String cardNum);
+    Boolean checkPin(String rawData, int pin);
 }

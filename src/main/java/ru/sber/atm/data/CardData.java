@@ -1,8 +1,8 @@
 package ru.sber.atm.data;
 
 import lombok.Data;
+import lombok.NonNull;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -10,9 +10,8 @@ import java.time.LocalDate;
  */
 @Data
 public class CardData {
-    private String number;
-    private String holder;
-    private int cvc2;
-    private LocalDate expiryDate;
-    private BigDecimal balance;
+    @NonNull private int pin;
+    @NonNull private String number;
+    @NonNull private int cvc2;
+    @NonNull private LocalDate expiryDate;
 }
