@@ -1,7 +1,7 @@
 package ru.sber.atm.data.balance;
 
 import lombok.NonNull;
-import ru.sber.atm.data.Currency;
+import ru.sber.atm.enums.Currency;
 
 import java.math.BigDecimal;
 
@@ -18,6 +18,8 @@ public class BalanceWithoutNegativeValue extends Balance{
     public void setSum(BigDecimal sum) throws Exception {
         if (sum.doubleValue() < 0) {
             throw new Exception("Баланс не может быть отрицательным");
+        } else {
+            this.sum = sum;
         }
     }
 }

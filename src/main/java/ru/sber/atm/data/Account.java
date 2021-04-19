@@ -6,7 +6,10 @@ import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import ru.sber.atm.data.balance.Balance;
 
+import javax.smartcardio.Card;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Класс представления информации о счёте

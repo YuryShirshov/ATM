@@ -10,7 +10,7 @@ import ru.sber.atm.devices.cardprocessors.CardProcessor;
 import ru.sber.atm.devices.cardreaders.CardReader;
 import ru.sber.atm.devices.pinpads.PinPad;
 import ru.sber.atm.enums.Command;
-import ru.sber.atm.enums.Error;
+import ru.sber.atm.enums.ValidationStatus;
 import ru.sber.atm.ui.UI;
 
 @RequiredArgsConstructor
@@ -32,9 +32,9 @@ public class ATM {
         ui.showPinPage();
         int pin = pinPad.getPinCode();
         // Валидируем полученную информацию
-        Error error = cardProcessor.validateCardData(rawData, pin);
-        if (error != Error.NO_ERROR) {
-            ui.showErrorPage(error.getDescription());
+        ValidationStatus validationStatus = cardProcessor.validateCardData(rawData, pin);
+        if (validationStatus != ValidationStatus.SUCCESS) {
+            ui.showErrorPage(validationStatus.getDescription());
             ui.showRemoveCardPage();
             cardReader.removeCard();
             return;
@@ -43,7 +43,7 @@ public class ATM {
         Command command = ui.getCommand();
         if (command == Command.GET_BALANCE) {// Запрос баланса
             Account<Balance> account = cardProcessor.getAccountData(rawData);
-            ui.showBalancePage(account.getNumber(), account.getBalance().getSum(), account.getBalance().getCurrency().getName());
+            ui.showBalancePage(account.getNumber(), account.getBalance().getSum(), account.getBalance().getCurrency().name());
         } else {// Остальные команды не реализованы
             ui.showUnsupportedCommandPage();
         }

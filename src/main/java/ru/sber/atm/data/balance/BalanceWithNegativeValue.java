@@ -1,7 +1,7 @@
 package ru.sber.atm.data.balance;
 
 import lombok.NonNull;
-import ru.sber.atm.data.Currency;
+import ru.sber.atm.enums.Currency;
 
 import java.math.BigDecimal;
 

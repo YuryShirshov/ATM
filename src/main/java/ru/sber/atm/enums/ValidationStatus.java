@@ -1,7 +1,7 @@
 package ru.sber.atm.enums;
 
-public enum Error {
-    NO_ERROR("Ошибок нет"),
+public enum ValidationStatus {
+    SUCCESS("Ошибок нет"),
     HOLDER_NOT_FOUND("Клиент не найден"),
     INCORRECT_PIN("Неверный ПИН-код"),
     DATE_EXPIRED("Срок действия карты истек");
@@ -12,7 +12,7 @@ public enum Error {
 
     private final String description;
 
-    Error(String description) {
+    ValidationStatus(String description) {
         this.description = description;
     }
 }

@@ -2,11 +2,11 @@ package ru.sber.atm.devices.cardprocessors;
 
 import ru.sber.atm.data.Account;
 import ru.sber.atm.data.balance.Balance;
-import ru.sber.atm.enums.Error;
+import ru.sber.atm.enums.ValidationStatus;
 
 public interface CardProcessor {
 
     Account<Balance> getAccountData(String cardNum);
 
-    Error validateCardData(String cardNum, int pin);
+    ValidationStatus validateCardData(String cardNum, int pin);
 }
