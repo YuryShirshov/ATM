@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import ru.sber.atm.data.balance.Balance;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Класс представления информации о клиенте
@@ -22,7 +23,7 @@ public class Client<T extends Balance> {
     /**
      * Метод получения информации о счёте по номеру карты
      */
-    public Account<T> getAccountByNumber(String number) {
-        return accounts.stream().filter(account -> account.getCardDataByNumber(number) != null).findAny().orElse(null);
+    public Optional<Account<T>> getAccountByNumber(String number) {
+        return accounts.stream().filter(account -> account.getCardDataByNumber(number).isPresent()).findAny();
     }
 }

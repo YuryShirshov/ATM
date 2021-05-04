@@ -13,6 +13,8 @@ import ru.sber.atm.enums.Command;
 import ru.sber.atm.enums.ValidationStatus;
 import ru.sber.atm.ui.UI;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal=true, level=AccessLevel.PRIVATE)
 public class ATM {
@@ -42,8 +44,8 @@ public class ATM {
         // Получаем команду, которую ввёл пользователь
         Command command = ui.getCommand();
         if (command == Command.GET_BALANCE) {// Запрос баланса
-            Account<Balance> account = cardProcessor.getAccountData(rawData);
-            ui.showBalancePage(account.getNumber(), account.getBalance().getSum(), account.getBalance().getCurrency().name());
+            Optional<Account<Balance>> accountOptional = cardProcessor.getAccountData(rawData);
+            accountOptional.ifPresent(balanceAccount -> ui.showBalancePage(balanceAccount.getNumber(), balanceAccount.getBalance().getSum(), balanceAccount.getBalance().getCurrency().name()));
         } else {// Остальные команды не реализованы
             ui.showUnsupportedCommandPage();
         }

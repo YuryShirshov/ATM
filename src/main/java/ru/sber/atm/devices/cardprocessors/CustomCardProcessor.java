@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Класс обеспечивающий процессинг взаимодействия с банковской частью
@@ -31,10 +32,13 @@ public class CustomCardProcessor implements CardProcessor {
      * Метод получения информации о счёте по номеру карты
      */
     @Override
-    public Account<Balance> getAccountData(String cardNum) {
-        Client<Balance> client = getClientData(cardNum);
-        if (client != null) return client.getAccountByNumber(cardNum);
-        return null;
+    public Optional<Account<Balance>> getAccountData(String cardNum) {
+        Optional<Client<Balance>> clientOptional = getClientData(cardNum);
+        if (clientOptional.isPresent()) {
+            return clientOptional.get().getAccountByNumber(cardNum);
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -42,11 +46,19 @@ public class CustomCardProcessor implements CardProcessor {
      */
     @Override
     public ValidationStatus validateCardData(String cardNum, int pin) {
-        Client<Balance> client = getClientData(cardNum);
-        if (client == null) {
+        Optional<Client<Balance>> clientOptional = getClientData(cardNum);
+        if (!clientOptional.isPresent()) {
             return ValidationStatus.HOLDER_NOT_FOUND;
         }
-        CardData cardData = client.getAccountByNumber(cardNum).getCardDataByNumber(cardNum);
+        Optional<Account<Balance>> accountOptional = clientOptional.get().getAccountByNumber(cardNum);
+        if (!accountOptional.isPresent()) {
+            return ValidationStatus.ACCOUNT_NOT_FOUND;
+        }
+        Optional<CardData> cardDataOptional = accountOptional.get().getCardDataByNumber(cardNum);
+        if (!cardDataOptional.isPresent()) {
+            return ValidationStatus.CARD_NOT_FOUND;
+        }
+        CardData cardData = cardDataOptional.get();
         if (cardData.getPin() != pin) {
             return ValidationStatus.INCORRECT_PIN;
         }
@@ -56,7 +68,7 @@ public class CustomCardProcessor implements CardProcessor {
         return ValidationStatus.SUCCESS;
     }
 
-    private Client<Balance> getClientData(String cardNum) {
-        return clients.stream().filter(x -> x.getAccountByNumber(cardNum) != null).findAny().orElse(null);
+    private Optional<Client<Balance>> getClientData(String cardNum) {
+        return clients.stream().filter(x -> x.getAccountByNumber(cardNum).isPresent()).findAny();
     }
 }

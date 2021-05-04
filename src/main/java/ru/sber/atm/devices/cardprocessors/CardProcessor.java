@@ -4,9 +4,11 @@ import ru.sber.atm.data.Account;
 import ru.sber.atm.data.balance.Balance;
 import ru.sber.atm.enums.ValidationStatus;
 
+import java.util.Optional;
+
 public interface CardProcessor {
 
-    Account<Balance> getAccountData(String cardNum);
+    Optional<Account<Balance>> getAccountData(String cardNum);
 
     ValidationStatus validateCardData(String cardNum, int pin);
 }
