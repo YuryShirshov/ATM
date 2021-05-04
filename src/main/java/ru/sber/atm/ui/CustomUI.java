@@ -1,6 +1,6 @@
 package ru.sber.atm.ui;
 
-import ru.sber.atm.Command;
+import ru.sber.atm.enums.Command;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -42,13 +42,13 @@ public class CustomUI implements UI {
     }
 
     @Override
-    public void showBalancePage(BigDecimal balance) {
-        System.out.println("Баланс карты: " + balance);
-    }
-
-    @Override
-    public void showWrongPinPage() {
-        System.out.println("Введен неверный ПИН-код");
+    public void showBalancePage(String accountNumber, BigDecimal balance, String currency) {
+        System.out.println("Номер счёта: " + accountNumber
+                + System.lineSeparator()
+                + "Баланс: " + balance
+                + System.lineSeparator()
+                + "Валюта: " + currency
+        );
     }
 
     @Override
@@ -59,5 +59,10 @@ public class CustomUI implements UI {
     @Override
     public void showRemoveCardPage() {
         System.out.println("Заберите карту");
+    }
+
+    @Override
+    public void showErrorPage(String errorMessage) {
+        System.out.println(errorMessage);
     }
 }

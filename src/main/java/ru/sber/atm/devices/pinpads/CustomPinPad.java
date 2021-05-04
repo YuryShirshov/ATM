@@ -7,8 +7,8 @@ import java.util.Scanner;
  */
 public class CustomPinPad implements PinPad {
     @Override
-    public String getPinCode() {
+    public int getPinCode() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        return scanner.nextInt();
     }
 }

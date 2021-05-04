@@ -1,6 +1,6 @@
 package ru.sber.atm.ui;
 
-import ru.sber.atm.Command;
+import ru.sber.atm.enums.Command;
 
 import java.math.BigDecimal;
 
@@ -10,13 +10,13 @@ public interface UI {
 
     void showPinPage();
 
-    void showBalancePage(BigDecimal balance);
-
-    void showWrongPinPage();
+    void showBalancePage(String accountNumber, BigDecimal balance, String currency);
 
     void showUnsupportedCommandPage();
 
     void showRemoveCardPage();
+
+    void showErrorPage(String errorMessage);
 
     Command getCommand();
 }

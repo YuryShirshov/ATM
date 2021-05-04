@@ -1,7 +1,5 @@
 package ru.sber.atm.devices.cardreaders;
 
-import java.util.Scanner;
-
 /**
  * Класс обеспечивающий чтение информации с карты
  */

@@ -1,10 +1,14 @@
 package ru.sber.atm.devices.cardprocessors;
 
-import ru.sber.atm.data.CardData;
+import ru.sber.atm.data.Account;
+import ru.sber.atm.data.balance.Balance;
+import ru.sber.atm.enums.ValidationStatus;
+
+import java.util.Optional;
 
 public interface CardProcessor {
 
-    Boolean checkPin(String rawData, String pin);
+    Optional<Account<Balance>> getAccountData(String cardNum);
 
-    CardData getCardData(String cardNum);
+    ValidationStatus validateCardData(String cardNum, int pin);
 }

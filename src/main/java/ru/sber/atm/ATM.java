@@ -4,23 +4,24 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.sber.atm.data.CardData;
+import ru.sber.atm.data.Account;
+import ru.sber.atm.data.balance.Balance;
 import ru.sber.atm.devices.cardprocessors.CardProcessor;
 import ru.sber.atm.devices.cardreaders.CardReader;
 import ru.sber.atm.devices.pinpads.PinPad;
+import ru.sber.atm.enums.Command;
+import ru.sber.atm.enums.ValidationStatus;
 import ru.sber.atm.ui.UI;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal=true, level=AccessLevel.PRIVATE)
 public class ATM {
-    @NonNull
-    private UI ui;
-    @NonNull
-    private CardReader cardReader;
-    @NonNull
-    private CardProcessor cardProcessor;
-    @NonNull
-    private PinPad pinPad;
+    @NonNull UI ui;
+    @NonNull CardReader cardReader;
+    @NonNull CardProcessor cardProcessor;
+    @NonNull PinPad pinPad;
 
     public void Run() {
         // Показываем стартовую страницу
@@ -31,17 +32,20 @@ public class ATM {
         String rawData = cardReader.getRawData();
         // Запрашиваем ПИН-код
         ui.showPinPage();
-        String pin = pinPad.getPinCode();
-        if (!cardProcessor.checkPin(rawData, pin)) {
-            // ПИН-код не прошел проверку, показываем ошибку и выходим
-            ui.showWrongPinPage();
+        int pin = pinPad.getPinCode();
+        // Валидируем полученную информацию
+        ValidationStatus validationStatus = cardProcessor.validateCardData(rawData, pin);
+        if (validationStatus != ValidationStatus.SUCCESS) {
+            ui.showErrorPage(validationStatus.getDescription());
+            ui.showRemoveCardPage();
+            cardReader.removeCard();
             return;
         }
         // Получаем команду, которую ввёл пользователь
         Command command = ui.getCommand();
         if (command == Command.GET_BALANCE) {// Запрос баланса
-            CardData cardData = cardProcessor.getCardData(rawData);
-            ui.showBalancePage(cardData.getBalance());
+            Optional<Account<Balance>> accountOptional = cardProcessor.getAccountData(rawData);
+            accountOptional.ifPresent(balanceAccount -> ui.showBalancePage(balanceAccount.getNumber(), balanceAccount.getBalance().getSum(), balanceAccount.getBalance().getCurrency().name()));
         } else {// Остальные команды не реализованы
             ui.showUnsupportedCommandPage();
         }

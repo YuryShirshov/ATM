@@ -1,4 +1,4 @@
-package ru.sber.atm;
+package ru.sber.atm.enums;
 
 public enum Command {
     UNKNOWN("Неизвестная команда"),
