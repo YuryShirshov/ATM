@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Balance</title>
+</head>
+<body>
+  <p th:text="'Владелец карты: ' + ${balance.clientName}" />
+  <p th:text="'Счёт: ' + ${balance.cardNumber}" />
+  <p th:text="'Баланс: ' + ${#numbers.formatDecimal(balance.sum, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+  <p th:text="'Валюта: ' + ${balance.currency}" />
+</body>
+</html>
